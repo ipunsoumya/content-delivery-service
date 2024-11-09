@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/content")
 public class ContentController {
@@ -37,5 +39,11 @@ public class ContentController {
     public ResponseEntity<ContentResponseDto> createContent(@RequestBody  ContentRequestDto contentRequestDto) {
         ContentResponseDto content = contentService.createContent(contentRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(content);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<ContentResponseDto>> getAllContent() {
+        List<ContentResponseDto> allContent = contentService.getAllContent();
+        return ResponseEntity.ok(allContent);
     }
 }

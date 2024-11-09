@@ -5,12 +5,13 @@ import com.content.service.dto.ContentResponseDto;
 import com.content.service.exception.ResourceNotFoundException;
 import com.content.service.model.Content;
 import com.content.service.repository.ContentRepository;
-import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ContentServiceImpl implements ContentService{
@@ -50,5 +51,16 @@ public class ContentServiceImpl implements ContentService{
         Content content = contentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Content not found with id: " + id));
         contentRepository.delete(content);
+    }
+
+    @Override
+    public List<ContentResponseDto> getAllContent() {
+        List<Content> contents = contentRepository.findAll();
+        List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
+        contents.forEach(content -> {
+            ContentResponseDto contentResponseDto = modelMapper.map(content, ContentResponseDto.class);
+            contentResponseDtos.add(contentResponseDto);
+        });
+        return contentResponseDtos;
     }
 }
