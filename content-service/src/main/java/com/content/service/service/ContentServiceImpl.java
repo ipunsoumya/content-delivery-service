@@ -63,4 +63,14 @@ public class ContentServiceImpl implements ContentService{
         });
         return contentResponseDtos;
     }
+    @Override
+    public List<ContentResponseDto> searchContent(String query) {
+        List<Content> contents = contentRepository.searchContent(query);
+        List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
+        contents.forEach(content -> {
+            ContentResponseDto contentResponseDto = modelMapper.map(content, ContentResponseDto.class);
+            contentResponseDtos.add(contentResponseDto);
+        });
+        return contentResponseDtos;
+    }
 }
