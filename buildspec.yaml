@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk11
+  pre_build:
+    commands:
+      - echo "pre building phase"
+      - mvn -version
+  build:
+    commands:
+      - echo "building phase"
+      - mvn clean package
+  post_build:
+    commands:
+      - echo "post building phase"
+
+artifacts:
+  files:
+    - target/*.jar
+  discard-paths: yes
+    
