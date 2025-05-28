@@ -18,6 +18,10 @@ permissions:
     type:
       - file
 hooks:
+  Install:
+    - location: scripts/install.sh
+      timeout: 120
+      runas: root
   BeforeInstall:
     - location: scripts/install_dependencies.sh
       timeout: 120
