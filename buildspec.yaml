@@ -3,21 +3,38 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: openjdk11
+      java: openjdk22
+    commands:
+      - echo "Installing dependencies..."
+      - apt-get update -y
+      - apt-get install -y zip
+
   pre_build:
     commands:
-      - echo "pre building phase"
-      - mvn -version
+      - echo "Preparing for build..."
+      - mvn --version
+      - java -version
+
   build:
     commands:
-      - echo "building phase"
+      - echo "Building the application..."
       - mvn clean package
+
   post_build:
     commands:
-      - echo "post building phase"
+      - echo "Creating deployment package..."
+      - mkdir -p deployment/{scripts,config}
+      - cp target/*.jar deployment/
+      - cp src/main/resources/application.yml deployment/config/
+      - cp scripts/* deployment/scripts/
+      - cp src/main/resources/appspec.yaml deployment/
+      - chmod +x deployment/scripts/*
+      - cd deployment && zip -r ../content-service.zip .
+      - cd ..
+      - echo "Deployment package created:- content-service.zip"
 
 artifacts:
   files:
-    - target/*.jar
+    - content-service.zip
   discard-paths: yes
     
