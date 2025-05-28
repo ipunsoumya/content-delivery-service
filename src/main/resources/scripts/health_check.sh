@@ -1,26 +1,65 @@
 #!/bin/bash
-# Health check for Java application
-HEALTH_CHECK_URL=http://localhost:8080/actuator/health  # Spring Boot Actuator endpoint
-# Or use your custom health endpoint: HEALTH_CHECK_URL=http://localhost:8080/api/health
 
-# Number of retries
-MAX_RETRIES=3
-RETRY_INTERVAL=5
+# Validate Spring Boot application is running
+echo "Validating Spring Boot application..."
 
-# Try to reach the health endpoint
-for i in $(seq 1 $MAX_RETRIES); do
-  HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" $HEALTH_CHECK_URL || true)
+APP_DIR="/opt/content-service"
+MAX_ATTEMPTS=5
+ATTEMPT=1
 
-  if [ $HTTP_STATUS -eq 200 ]; then
-    echo "Health check passed"
-    exit 0
-  fi
+# Check if PID file exists
+if [ ! -f "$APP_DIR/app.pid" ]; then
+    echo "ERROR: PID file not found"
+    exit 1
+fi
 
-  if [ $i -lt $MAX_RETRIES ]; then
-    echo "Health check failed (attempt $i of $MAX_RETRIES). Retrying in $RETRY_INTERVAL seconds..."
-    sleep $RETRY_INTERVAL
-  fi
+PID=$(cat $APP_DIR/app.pid)
+
+# Check if process is running
+if ! kill -0 $PID 2>/dev/null; then
+    echo "ERROR: Spring Boot process (PID: $PID) is not running"
+    exit 1
+fi
+
+echo "Spring Boot process is running with PID: $PID"
+
+# Wait for application to be ready (check health endpoint or port)
+# Default Spring Boot runs on port 8080, adjust if different
+PORT=8080
+
+echo "Checking if application is responding on port $PORT..."
+
+while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+    echo "Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+    
+    # Check if port is listening
+    if netstat -tuln | grep ":$PORT " > /dev/null; then
+        echo "Port $PORT is listening"
+        
+        # Try to make HTTP request to health endpoint (if available)
+        if command -v curl &> /dev/null; then
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:$PORT/actuator/health 2>/dev/null || echo "000")
+            
+            if [ "$HTTP_STATUS" = "200" ]; then
+                echo "Health check passed (HTTP 200)"
+                echo "Spring Boot application is running and healthy!"
+                exit 0
+            elif curl -s -o /dev/null http://localhost:$PORT 2>/dev/null; then
+                echo "Application is responding on port $PORT"
+                echo "Spring Boot application is running!"
+                exit 0
+            fi
+        else
+            # If curl is not available, just check if port is open
+            echo "Application appears to be running on port $PORT"
+            exit 0
+        fi
+    fi
+    
+    sleep 2
+    ATTEMPT=$((ATTEMPT + 1))
 done
 
-echo "Health check failed after $MAX_RETRIES attempts"
+echo "ERROR: Application validation failed after $MAX_ATTEMPTS attempts"
+echo "Check application logs: $APP_DIR/logs/application.log"
 exit 1

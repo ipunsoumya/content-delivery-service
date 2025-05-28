@@ -1,10 +1,21 @@
 version: 0.0
 os: linux
 files:
-  - source: /target/content-service-0.0.1-SNAPSHOT.jar
-    destination: /opt/content-service/
-  - source: /config/application.yaml
-    destination: /opt/content-service/config/
+  - source: /
+    destination: /opt/content-service
+permissions:
+  - object: /opt/content-service
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+  - object: /opt/content-service/scripts
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+    type:
+      - file
 hooks:
   BeforeInstall:
     - location: scripts/before_install.sh
