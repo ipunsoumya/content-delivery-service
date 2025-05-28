@@ -25,7 +25,7 @@ phases:
       - mkdir -p deployment/{scripts,config}
       - cp target/*.jar deployment/
       - cp src/main/resources/application.yml deployment/config/
-      - cp scripts/* deployment/scripts/
+      - cp src/main/resources/scripts/* deployment/scripts/
       - cp src/main/resources/appspec.yaml deployment/
       - chmod +x deployment/scripts/*
       - cd deployment && zip -r ../content-service.zip .
