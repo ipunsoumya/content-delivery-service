@@ -63,7 +63,7 @@ public class ContentServiceImpl implements ContentService{
         });
         return contentResponseDtos;
     }
-    @Override
+    /*@Override
     public List<ContentResponseDto> searchContent(String query) {
         List<Content> contents = contentRepository.searchContent(query);
         List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
@@ -72,5 +72,5 @@ public class ContentServiceImpl implements ContentService{
             contentResponseDtos.add(contentResponseDto);
         });
         return contentResponseDtos;
-    }
+    }*/
 }

@@ -11,5 +11,5 @@ public interface ContentService {
     ContentResponseDto updateContent(String id, ContentRequestDto contentRequestDto);
     void deleteContent(String id);
     List<ContentResponseDto> getAllContent();
-    List<ContentResponseDto> searchContent(String query);
+//    List<ContentResponseDto> searchContent(String query);
 }

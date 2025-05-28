@@ -4,7 +4,7 @@
 echo "Validating Spring Boot application..."
 
 APP_DIR="/opt/content-service"
-MAX_ATTEMPTS=5
+MAX_ATTEMPTS=30
 ATTEMPT=1
 
 # Check if PID file exists

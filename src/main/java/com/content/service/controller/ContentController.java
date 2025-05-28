@@ -47,9 +47,9 @@ public class ContentController {
         return ResponseEntity.ok(allContent);
     }
 
-    @GetMapping("/search")
+    /*@GetMapping("/search")
     public ResponseEntity<List<ContentResponseDto>> searchContent(@RequestParam String query) {
         List<ContentResponseDto> searchResults = contentService.searchContent(query);
         return ResponseEntity.ok(searchResults);
-    }
+    }*/
 }

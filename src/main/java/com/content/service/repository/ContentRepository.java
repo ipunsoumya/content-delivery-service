@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ContentRepository extends MongoRepository<Content, String> {
     List<Content> findByTagsIn(List<String> tags);
-    List<Content> searchContent(String query);
+//    List<Content> searchContent(String query);
 }
