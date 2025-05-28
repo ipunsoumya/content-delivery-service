@@ -10,13 +10,6 @@ permissions:
     owner: ec2-user
     group: ec2-user
     mode: 755
-  - object: /opt/content-service/scripts
-    pattern: "**"
-    owner: ec2-user
-    group: ec2-user
-    mode: 755
-    type:
-      - file
 hooks:
   Install:
     - location: scripts/install.sh
