@@ -26,7 +26,7 @@ phases:
       - cp target/*.jar deployment/
       - cp src/main/resources/application.yml deployment/config/
       - cp src/main/resources/scripts/* deployment/scripts/
-      - cp src/main/resources/appspec.yaml deployment/
+      - cp src/main/resources/appspec.yml deployment/
       - chmod +x deployment/scripts/*
       - cd deployment && zip -r ../content-service.zip .
       - cd ..
