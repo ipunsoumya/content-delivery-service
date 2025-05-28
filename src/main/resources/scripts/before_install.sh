@@ -1,3 +1,4 @@
+#!/bin/bash
 # Stop the application if running
 if [ -f /etc/init.d/content-service ]; then
   /etc/init.d/content-service stop

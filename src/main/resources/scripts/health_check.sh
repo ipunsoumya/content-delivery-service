@@ -1,3 +1,4 @@
+#!/bin/bash
 # Health check for Java application
 HEALTH_CHECK_URL=http://localhost:8080/actuator/health  # Spring Boot Actuator endpoint
 # Or use your custom health endpoint: HEALTH_CHECK_URL=http://localhost:8080/api/health
