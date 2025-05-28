@@ -1,4 +1,4 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/content_db
+      uri: mongodb://Artemus%40390@172.31.8.37:27017/content_db?authSource=admin
