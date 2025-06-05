@@ -1,5 +1,10 @@
 version: 0.2
 
+cache:
+  paths:
+    - /root/.m2/**/*
+  type: S3
+  location: aws-code-build-cache-ipunsoumya
 phases:
   install:
     runtime-versions:
